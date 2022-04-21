@@ -19,7 +19,7 @@ class StateHolder:
         for place in places:
             place = place.lower().strip()
             self.state[place] = False
-        self.state['Луганська_область'] = True
+        self.state['Луганська_область'.lower().strip()] = True
 
     def alarm_on(self, place):
         place = place.lower().strip()
