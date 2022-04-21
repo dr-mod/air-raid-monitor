@@ -1,3 +1,4 @@
+import sys
 from telethon import TelegramClient, events
 from telethon.tl.functions.messages import GetHistoryRequest
 from eink import Eink
@@ -25,7 +26,15 @@ async def main(event):
 
 
 async def main():
-    channel_entity = await client.get_entity(1766138888)
+    CHANNEL_NAME = 'Повітряна Тривога'
+    subscribed_to_channel = False
+    async for dialog in client.iter_dialogs():
+        if not dialog.is_group and dialog.is_channel and dialog.name == CHANNEL_NAME:
+            subscribed_to_channel = True
+    if not subscribed_to_channel:
+        print("You must subscribe to https://t.me/air_alert_ua")
+        sys.exit(-1)
+    channel_entity = await client.get_entity(CHANNEL_NAME)
     posts = await client(GetHistoryRequest(
         peer=channel_entity,
         limit=200,

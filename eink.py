@@ -77,7 +77,7 @@ class Eink(Observer):
         return renderPM.drawToPIL(drawing)
 
     def generate_map(self, regions):
-        tree = ET.parse('ua.svg')
+        tree = ET.parse(os.path.join(os.path.dirname(__file__), 'ua.svg'))
         for region in regions:
             elements = tree.findall(f'.//*[@name="{region}"]')
             for element in elements:
