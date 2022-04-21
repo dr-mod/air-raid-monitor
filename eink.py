@@ -1,3 +1,4 @@
+import os
 import xml.etree.ElementTree as ET
 import io
 from collections import Counter
@@ -6,16 +7,18 @@ from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
 from PIL import Image, ImageDraw, ImageFont
 from observer import Observer
+
 try:
     from waveshare_epd import epd2in13_V2
 except ImportError:
     pass
 
-
 SCREEN_HEIGHT = 122
 SCREEN_WIDTH = 250
 
-FONT_SMALL = ImageFont.truetype('Monaco.ttf', 11)
+FONT_SMALL = ImageFont.truetype(
+    os.path.join(os.path.dirname(__file__), 'Monaco.ttf'), 11)
+
 
 class Eink(Observer):
 
@@ -44,6 +47,7 @@ class Eink(Observer):
         def pos(x, y):
             side = 14
             return [(x, y), (x + side, y + side)]
+
         screen_draw.rectangle((0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), fill="#ffffff")
         map = self.generate_map(regions)
         image.paste(map, (SCREEN_WIDTH - 182, 0))

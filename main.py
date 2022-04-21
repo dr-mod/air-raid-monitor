@@ -25,8 +25,7 @@ async def main(event):
 
 
 async def main():
-    channel_username = 'Повітряна Тривога'
-    channel_entity = await client.get_entity(channel_username)
+    channel_entity = await client.get_entity(1766138888)
     posts = await client(GetHistoryRequest(
         peer=channel_entity,
         limit=200,
