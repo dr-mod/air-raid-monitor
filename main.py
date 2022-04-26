@@ -1,60 +1,41 @@
-import sys
-from telethon import TelegramClient, events
-from telethon.tl.functions.messages import GetHistoryRequest
+import json
+import time
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 from eink import Eink
 from observer import Observable
-from parser import Parser
-from state_holder import StateHolder
-
-API_ID = 0  #Your API_ID
-API_HASH = ''  #Your API_HASH
-
-client = TelegramClient('anon', API_ID, API_HASH)
-
-state_holder = StateHolder()
-parser = Parser(state_holder)
-observable = Observable()
-Eink(observable)
 
 
-@client.on(events.NewMessage(1766138888))
-async def main(event):
-    print(event.message)
-    parser.process_message(event.message.message)
-    state = state_holder.generate()
-    observable.update_observers(state)
+def get_state():
+    req = Request('https://sirens.in.ua/api/v1/')
+    data = urlopen(req).read()
+    return json.loads(data)
 
 
-async def main():
-    CHANNEL_NAME = 'Повітряна Тривога'
-    subscribed_to_channel = False
-    async for dialog in client.iter_dialogs():
-        if not dialog.is_group and dialog.is_channel and dialog.name == CHANNEL_NAME:
-            subscribed_to_channel = True
-    if not subscribed_to_channel:
-        print("You must subscribe to https://t.me/air_alert_ua")
-        sys.exit(-1)
-    channel_entity = await client.get_entity(CHANNEL_NAME)
-    posts = await client(GetHistoryRequest(
-        peer=channel_entity,
-        limit=200,
-        offset_date=None,
-        offset_id=0,
-        max_id=0,
-        min_id=0,
-        add_offset=0,
-        hash=0))
-    messages = []
-    for message in posts.messages:
-        messages.append(message.message)
-    messages.reverse()
-    for message in messages:
-        parser.process_message(message)
-    state = state_holder.generate()
-    observable.update_observers(state)
+def main():
+    observable = Observable()
+    Eink(observable)
+    prev_state = {}
+    try:
+        main_cycle(observable, prev_state)
+    except IOError as e:
+        print(str(e))
+    except KeyboardInterrupt:
+        observable.close()
 
 
-client.start()
-client.loop.create_task(main())
-client.run_until_disconnected()
+def main_cycle(observable, prev_state):
+    while True:
+        try:
+            curr_state = get_state()
+            if curr_state != prev_state:
+                prev_state = curr_state
+                observable.update_observers(curr_state)
+            time.sleep(10)
+        except (HTTPError, URLError) as e:
+            print(str(e))
+            time.sleep(5)
 
+
+if __name__ == "__main__":
+    main()

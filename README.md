@@ -21,7 +21,7 @@ Shows active air-raid sirens in Ukraine.
     ```
     sudo apt update
     sudo apt-get install python3-pip python3-pil python3-numpy python3-lxml git 
-    pip3 install RPi.GPIO spidev svglib telethon
+    pip3 install RPi.GPIO spidev svglib
     git clone https://github.com/waveshare/e-Paper.git ~/e-Paper
     pip3 install ~/e-Paper/RaspberryPi_JetsonNano/python/
     ```
@@ -29,8 +29,6 @@ Shows active air-raid sirens in Ukraine.
     ```
     git clone https://github.com/dr-mod/air-raid-monitor.git ~/air-raid-monitor
     ```
-4. Replace Telegram API_ID and API_HASH in main.py, if you don't have them you can generate yours here: https://my.telegram.org/auth
-5. Subscribe to the https://t.me/air_alert_ua channel using your mobile device or desktop app
 6. Run the application
     ```
     python3 ~/air-raid-monitor/main.py
