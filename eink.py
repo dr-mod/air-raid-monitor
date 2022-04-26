@@ -85,7 +85,7 @@ class Eink(Observer):
                     element.set("fill", "#000000")
                 elif regions[region] == "partial":
                     element.set("fill", "#FF0000")
-                elif regions[region] == "occupied":
+                elif regions[region] == "no_data":
                     element.set("fill", "#AA0000")
         xmlstr = ET.tostring(tree.getroot(), encoding='utf8', method='xml').decode("utf-8")
         img = Eink.render_svg(xmlstr, 1)
