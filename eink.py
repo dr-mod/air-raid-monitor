@@ -49,6 +49,11 @@ class Eink(Observer):
             return [(x, y), (x + side, y + side)]
 
         screen_draw.rectangle((0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), fill="#ffffff")
+
+        if not regions:
+            self.connection_lost_text(screen_draw)
+            return
+
         map = self.generate_map(regions)
         image.paste(map, (SCREEN_WIDTH - 182, 0))
         self.text(screen_draw)
@@ -70,6 +75,9 @@ class Eink(Observer):
         screen_draw.text((6, 4), "Air raid", font=FONT_SMALL)
         screen_draw.text((2, 16), "sirens in", font=FONT_SMALL)
         screen_draw.text((2, 28), " Ukraine", font=FONT_SMALL)
+
+    def connection_lost_text(self, screen_draw):
+        screen_draw.text((79, 56), 'NO CONNECTION', font=FONT_SMALL)
 
     @staticmethod
     def render_svg(_svg, _scale):

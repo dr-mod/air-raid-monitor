@@ -26,16 +26,21 @@ def main():
 def main_cycle(observable):
     curr_state = {}
     prev_state = {}
+    timeout_count = 0
     while True:
         try:
             curr_state = get_state()
+            timeout_count = 0
+        except (HTTPError, URLError) as e:
+            print("HTTP,URL Error: "+str(e))
+            timeout_count += 1
+        finally:
+            if timeout_count >= 3:
+                curr_state = None
             if curr_state != prev_state:
                 prev_state = curr_state
                 observable.update_observers(curr_state)
             time.sleep(10)
-        except (HTTPError, URLError) as e:
-            print("HTTP,URL Error: "+str(e))
-            time.sleep(5)
 
 
 if __name__ == "__main__":
