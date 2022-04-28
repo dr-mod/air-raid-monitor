@@ -15,16 +15,17 @@ def get_state():
 def main():
     observable = Observable()
     Eink(observable)
-    prev_state = {}
     try:
-        main_cycle(observable, prev_state)
+        main_cycle(observable)
     except IOError as e:
         print(str(e))
     except KeyboardInterrupt:
         observable.close()
 
 
-def main_cycle(observable, prev_state):
+def main_cycle(observable):
+    curr_state = {}
+    prev_state = {}
     while True:
         try:
             curr_state = get_state()
