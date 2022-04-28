@@ -18,7 +18,7 @@ def main():
     try:
         main_cycle(observable)
     except IOError as e:
-        print(str(e))
+        print("IOError: "+str(e))
     except KeyboardInterrupt:
         observable.close()
 
@@ -34,7 +34,7 @@ def main_cycle(observable):
                 observable.update_observers(curr_state)
             time.sleep(10)
         except (HTTPError, URLError) as e:
-            print(str(e))
+            print("HTTP,URL Error: "+str(e))
             time.sleep(5)
 
 
