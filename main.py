@@ -1,14 +1,14 @@
 import json
 import time
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import urlopen
 from eink import Eink
 from observer import Observable
 
 
 def get_state():
-    req = Request('https://sirens.in.ua/api/v1/')
-    data = urlopen(req).read()
+    with urlopen('https://sirens.in.ua/api/v1/', timeout=10) as response:
+        data = response.read()
     return json.loads(data)
 
 
