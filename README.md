@@ -1,6 +1,11 @@
-# Air-raid Monitor
+# Air Raid Monitor for Raspberry Pi
 
-Shows active air-raid sirens in Ukraine.
+This device shows the current status of air raid sirens in Ukraine. The data is pulled every 10 seconds from https://sirens.in.ua/
+
+#### Version of this widget for other platforms:
+* [Windows](https://github.com/dr-mod/air-raid-widget-windows)
+* [Linux](https://github.com/dr-mod/air-raid-widget-linux)
+* [macOS](https://github.com/dr-mod/air-raid-widget-macos)
 
 ![display](docs/display_1.jpg)
 
