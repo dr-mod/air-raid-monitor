@@ -32,8 +32,8 @@ def main_cycle(observable):
         try:
             curr_state = get_state()
             timeout_count = 0
-        except (HTTPError, URLError) as e:
-            print("HTTP,URL Error: "+str(e))
+        except (HTTPError, URLError, IOError) as e:
+            print("Error: " + str(e))
             timeout_count += 1
         finally:
             if timeout_count >= 3:
